@@ -1,0 +1,10 @@
+name: BlockInfection
+version: '${version}'
+main: tech.simonwalker.blockinfection.BlockInfectionPlugin
+api-version: 1.18
+authors: [ simondoesstuff ]
+commands:
+  BlockInfection:
+    aliases:
+      - bi
+    description: Root command for BlockInfection
