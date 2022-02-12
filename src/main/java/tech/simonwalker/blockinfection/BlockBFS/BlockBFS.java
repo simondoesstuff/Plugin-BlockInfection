@@ -47,6 +47,20 @@ public abstract class BlockBFS {
         }.runTaskTimer(plugin, 0, 1);
     }
 
+    /**
+     * Stops the spread prematurely.
+     * (Stops normally when no more blocks can be
+     * accessed)
+     *
+     * This instance should be thrown out after it finishes
+     * the spread. Create a new instance to start a new
+     * spread.
+     */
+    public void cancel() {
+        taskTimer.cancel();
+        onFinish(time);
+    }
+
     public Iterator<Vector> getDiscovered() {
         return discovered.iterator();
     }
@@ -70,7 +84,7 @@ public abstract class BlockBFS {
             var frontierIterator = frontier.entrySet().iterator();
 
             if (!frontierIterator.hasNext()) {
-                privateFinished();
+                cancel();
                 return;
             }
 
@@ -114,12 +128,6 @@ public abstract class BlockBFS {
         // all expansions completed for this tick
 
         onTick(time);
-    }
-
-
-    private void privateFinished() {
-        taskTimer.cancel();
-        onFinish(time);
     }
 
     /**
