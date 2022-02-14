@@ -1,6 +1,5 @@
 package tech.simonwalker.blockinfection.BlockBFS;
 
-import com.google.common.collect.Iterators;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,21 +34,5 @@ public class BlockToBlockTerraformer extends AdjacentBlockBFS {
     @Override
     protected int expansionDelay(Block node) {
         return ThreadLocalRandom.current().nextInt(1, 200);
-    }
-
-    @Override
-    protected void onFinish(int time) {
-        super.onFinish(time);
-
-        int destruction = Iterators.size(getDiscovered());
-
-        String pattern = "mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String duration = simpleDateFormat.format(new Date((long) time / 20 * 1000));
-
-        Utils.msg(Bukkit.getPlayer("simondoesstuff"),
-                "§aConsumed §e%s§a blocks in §e%sm§a.",
-                destruction, duration
-        );
     }
 }
