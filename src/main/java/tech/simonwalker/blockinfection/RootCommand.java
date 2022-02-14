@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tech.simonwalker.blockinfection.BlockBFS.BlockDestroyerTerraformer;
 import tech.simonwalker.blockinfection.BlockBFS.BlockToBlockTerraformer;
+import tech.simonwalker.blockinfection.BlockBFS.WorldSwapTerraformer;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class RootCommand implements SimplifiedCommandExecutor, SimplifiedTabComp
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
         return switch (args.length) {
             case 1 -> List.of("start");
-            case 2 -> List.of("destroy", "transform");
+            case 2 -> List.of("destroy", "transform", "interdimensional");
             case 3 -> args[1].equalsIgnoreCase("transform") ? List.of("fromBlock") : null;
             case 4 -> args[1].equalsIgnoreCase("transform") ? List.of("toBlock") : null;
             default -> null;
@@ -33,13 +34,15 @@ public class RootCommand implements SimplifiedCommandExecutor, SimplifiedTabComp
                     return;
                 }
 
+                Player player = (Player) sender;
+
                 if (args.length == 1) {
                     msg(sender, "§4You include \"destroy\" or \"transform\".");
                     return;
                 }
 
                 if (args[1].equalsIgnoreCase("destroy")) {
-                    startInfection(((Player) sender).getPlayer());
+                    startInfection(player);
                     return;
                 }
 
@@ -68,7 +71,12 @@ public class RootCommand implements SimplifiedCommandExecutor, SimplifiedTabComp
                         return;
                     }
 
-                    transformationInfection((Player) sender, fromBlock, toBlock);
+                    transformationInfection(player, fromBlock, toBlock);
+                    return;
+                }
+
+                if (args[1].equalsIgnoreCase("interdimensional")) {
+                    interdimensionalInfection(player);
                     return;
                 }
             default:
@@ -76,10 +84,24 @@ public class RootCommand implements SimplifiedCommandExecutor, SimplifiedTabComp
         }
     }
 
+    private void interdimensionalInfection(Player player) {
+        msg(player, "§aWham!");
+
+        var blockTarget = player.getTargetBlock(50);
+
+        if (blockTarget == null) {
+            msg(player, "§4You must be looking at a block");
+            return;
+        }
+
+        var BFS = new WorldSwapTerraformer(BlockInfectionPlugin.getInst(), blockTarget.getLocation());
+        BFS.start();
+    }
+
     private void transformationInfection(Player player, Material from, Material to) {
         msg(player, "§aAs you wish.");
 
-        var blockTarget = player.getTargetBlock(20);
+        var blockTarget = player.getTargetBlock(50);
 
         if (blockTarget == null) {
             msg(player, "§4You must be looking at a block");
@@ -93,7 +115,7 @@ public class RootCommand implements SimplifiedCommandExecutor, SimplifiedTabComp
     private void startInfection(Player player) {
         msg(player, "§aI am so sorry.");
 
-        var blockTarget = player.getTargetBlock(20);
+        var blockTarget = player.getTargetBlock(50);
 
         if (blockTarget == null) {
             msg(player, "§4You must be looking at a block");
