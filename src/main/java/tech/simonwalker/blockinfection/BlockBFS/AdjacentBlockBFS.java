@@ -43,9 +43,9 @@ public abstract class AdjacentBlockBFS extends BlockBFS {
                 .toList().toArray(new Route[0]);
     }
 
-    protected abstract void transformBlock(Block node);
-
     protected abstract boolean expansionAllowed(Block node);
 
     protected abstract int expansionDelay(Block node);
+
+    protected abstract void transformBlock(Block node);
 }
