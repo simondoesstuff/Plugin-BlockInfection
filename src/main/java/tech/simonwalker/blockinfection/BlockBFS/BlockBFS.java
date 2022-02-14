@@ -1,13 +1,16 @@
 package tech.simonwalker.blockinfection.BlockBFS;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import tech.simonwalker.blockinfection.Utils.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class BlockBFS {
@@ -63,6 +66,10 @@ public abstract class BlockBFS {
 
     public Iterator<Vector> getDiscovered() {
         return discovered.iterator();
+    }
+
+    public int amountDiscovered() {
+        return discovered.size();
     }
 
     private void privateOnTick() {
@@ -143,7 +150,18 @@ public abstract class BlockBFS {
      *
      * @param time The total time (in ticks) while running
      */
-    protected void onFinish(int time) {}
+    protected void onFinish(int time) {
+        int destruction = amountDiscovered();
+
+        String pattern = "mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String duration = simpleDateFormat.format(new Date((long) time / 20 * 1000));
+
+        Utils.msg(Bukkit.getPlayer("simondoesstuff"),
+                "§aConsumed §e%s§a blocks in §e%sm§a.",
+                destruction, duration
+        );
+    }
 
     /**
      * Feel free to override this method. (Empty implementation in super)
