@@ -1,8 +1,8 @@
-# Plugin-BlockInfection
+# Block Infection
 Terraform Minecraft worlds with an infection.
 
-Block Infection is a **proof-of-concept** and currently serves no purpose other than to
-showcase what Minecraft is capable of.
+Block Infection is a **proof-of-concept** Minecraft Plugin that currently serves no purpose other than
+to showcase what Minecraft is capable of.
 
 
 Block Infection uses an algorithm similar to a Breadth-First-Search using Minecraft blocks as nodes.
